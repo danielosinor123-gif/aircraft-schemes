@@ -12,16 +12,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: conceptual sizing + A/B comparison (pure python, no deps)
+      - name: conceptual sizing + CLAIM-1 analysis + A/B comparison (pure python, no deps)
         run: |
           python schemes/kestrel-x1/sizing.py
           python schemes/nova-bwb/sizing.py
+          python schemes/kestrel-x1/analysis.py
           python compare.py
       - name: generated evidence exists
         run: |
           test -f docs/comparison.md
           test -f schemes/kestrel-x1/sizing.json
           test -f schemes/nova-bwb/sizing.json
+          test -f schemes/kestrel-x1/analysis/wake-filling.json
+      - name: generated-evidence freshness gate (fail-closed, exit 2 on stale)
+        run: |
+          git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally (sizing.py/analysis.py/compare.py) and commit"; exit 2; }
+          echo "freshness gate ok"
 
   cad:
     runs-on: ubuntu-latest

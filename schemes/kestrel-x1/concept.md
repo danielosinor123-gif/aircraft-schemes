@@ -19,11 +19,16 @@ boundary-layer-ingesting (BLI) fan**. Control is by a **morphing (flexible)
 trailing edge** instead of hinged flaps/ailerons. Power: **two rear-mounted
 turbo-generators plus a battery buffer**, feeding the electric fan array.
 
-**Novelty statement (honest):** every individual element exists in published
-research (see §4). What is novel here is the *integration scheme*: truss-enabled
-span + wake-filling DEP array at the wing–body junction + aft BLI fan + morphing
-trailing edge on one airframe, with fan placement chosen from wake physics rather
-than packaging convenience.
+**CLAIM-1 (the one computed, falsifiable claim of this scheme):** at the M0.58
+cruise point, wake filling as configured is worth ≈ 2.1% of cruise propulsive
+power [C], dominated by the **aft BLI fan** (~2.15%); the trailing-edge
+wing–body-junction fans contribute ~0.01% and are packaging-driven, not
+physics-driven. Method, assumptions, sensitivity and falsification path:
+`docs/wake-filling.md`, machine-readable in `analysis/wake-filling.json`,
+computed by `lib/wake_filling.py` from the same geometry module (`geom.py`)
+that builds the CAD model. Every individual *element* still comes from
+published research (§4); what this scheme decides from physics is fan
+placement, and that decision is now a number, not an assertion.
 
 ## 2. Configuration (three-view)
 
@@ -79,10 +84,13 @@ claim is asserted against the model in CI, not just written here.
 
 ## 5. Claim discipline — what this document does and does not claim
 
-- DOES claim: a coherent, novel *combination* of published concepts, with a
-  parametric CAD model and in-repo conceptual sizing (`sizing.json`).
-- DOES NOT claim: any measured or simulated performance. No number marked
-  [T]/[E] is a result. Nothing here may be quoted as "KESTREL-X1 achieves X%".
+- DOES claim: a coherent integration of published concepts, with a parametric
+  CAD model, in-repo conceptual sizing (`sizing.json`), one computed and
+  falsifiable claim (CLAIM-1, `docs/wake-filling.md`), and coarse in-repo CFD
+  runs with logged residuals (`cfd/results.json`, [M]).
+- DOES NOT claim: any measured or validated performance. No number marked
+  [T]/[E]/[C]/[M] is a result. Nothing here may be quoted as "KESTREL-X1
+  achieves X%".
 
 ## 6. Limitations and required next steps before any real claim
 
@@ -106,6 +114,7 @@ claim is asserted against the model in CI, not just written here.
 pip install -r requirements.txt          # or: uv pip install -r requirements.txt
 python schemes/kestrel-x1/model.py       # STEP/STL/SVG views + kestrel-x1-report.json
 python schemes/kestrel-x1/sizing.py      # sizing.json
+python schemes/kestrel-x1/analysis.py    # analysis/wake-filling.json — CLAIM-1 [C]
 python tools/export_mesh.py              # cfd/ STL tessellation + blockMeshDict scaffold
 python compare.py                        # docs/comparison.md (A/B vs nova-bwb)
 ```

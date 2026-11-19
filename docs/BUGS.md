@@ -1,5 +1,17 @@
 # BUGS / provenance log
 
+## BUG-2026-11-19-04 — CFD case used nu = 3.27e-5; ISA at 25,000 ft gives 2.805e-5
+
+The first OpenFOAM cases (`tools/cfd-template/constant/transportProperties`,
+and the committed `schemes/*/cfd/results.json`) used nu = 3.27e-5 m²/s. Proper
+ISA + Sutherland at 25,000 ft gives nu = 2.805e-5 (the old value is ~14% high,
+so Re was ~14% low). Impact on the committed [M] results: small — the reported
+forces are pressure-dominated at these bluff geometries, and the skin-friction
+estimate scales only weakly with Re. **Fix:** template now uses 2.805e-5;
+`results.json` is kept as the historical record of the runs as executed
+(its `Re` fields used the old nu), with this entry as the provenance note.
+Found while writing `lib/wake_filling.py`, which computes ISA properly.
+
 ## BUG-2026-11-19-03 — generated blockMeshDict had duplicate/missing faces
 
 `tools/export_mesh.py` emitted a `sides` boundary with faces `(0 3 2 1)` and

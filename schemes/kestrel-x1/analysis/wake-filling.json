@@ -1,0 +1,201 @@
+{
+  "scheme": "kestrel-x1",
+  "claim_id": "CLAIM-1",
+  "tag": "[C] computed in-repo by lib/wake_filling.py \u2014 order-of-magnitude, NOT validated",
+  "claim": "At the M0.58 / 25,000 ft cruise point, wake filling as configured is worth ~2.146% of cruise propulsive power, dominated by the aft BLI fan; the TE wing-body-junction fans contribute <0.1% (packaging-driven, not physics-driven). Falsifiable via CFD with actuator-disc fans or a wind-tunnel wake survey \u2014 see docs/wake-filling.md.",
+  "atmosphere_isa": {
+    "T_K": 238.62,
+    "p_Pa": 37600.7,
+    "rho_kg_m3": 0.54895,
+    "mu": 1.5397400673268596e-05,
+    "nu_m2_s": 2.805e-05,
+    "a_mps": 309.67
+  },
+  "cruise": {
+    "U_mps": 179.61,
+    "q_Pa": 8854.4,
+    "rho": 0.54895,
+    "nu": 2.805e-05
+  },
+  "inputs": {
+    "name": "kestrel-x1",
+    "mach": 0.58,
+    "alt_ft": 25000,
+    "eta_fan": 0.85,
+    "FUS_SECTIONS": [
+      [
+        -20,
+        0.02
+      ],
+      [
+        -18,
+        0.9
+      ],
+      [
+        -14,
+        1.55
+      ],
+      [
+        -6,
+        1.7
+      ],
+      [
+        8,
+        1.7
+      ],
+      [
+        14,
+        1.4
+      ],
+      [
+        18.5,
+        0.7
+      ],
+      [
+        20,
+        0.15
+      ]
+    ],
+    "FAN_YS": [
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15
+    ],
+    "FAN_R": 0.32,
+    "FAN_L": 1.4,
+    "wake_spread": 0.05,
+    "bli_station_x": 18.5,
+    "bli_fan_r": 0.9,
+    "thrust_splits": [
+      0.3,
+      0.5,
+      0.7
+    ]
+  },
+  "fuselage": {
+    "length_m": 40,
+    "wetted_area_m2": 361.6,
+    "Re_L": 256126346,
+    "Cf": 0.001872,
+    "drag_N": 5992.1,
+    "share_of_total_drag": 0.5657
+  },
+  "total_cruise": {
+    "drag_N": 10592,
+    "propulsive_power_kW": 2238.1,
+    "n_te_fans": 14,
+    "te_fan_thrust_N_at_phi_0.5": 378.3
+  },
+  "te_fans_in_fuselage_wake": [
+    {
+      "y_m": 3,
+      "x_inlet_m": 1.42,
+      "wake_halfwidth_m": 2.771,
+      "peak_deficit_mps": 3.1574,
+      "deficit_at_fan_mps": 0.3029,
+      "deficit_frac_of_U": 0.001686
+    },
+    {
+      "y_m": 5,
+      "x_inlet_m": 1.21,
+      "wake_halfwidth_m": 2.761,
+      "peak_deficit_mps": 3.1815,
+      "deficit_at_fan_mps": 0.0045,
+      "deficit_frac_of_U": 2.5e-05
+    },
+    {
+      "y_m": 7,
+      "x_inlet_m": 1.0,
+      "wake_halfwidth_m": 2.75,
+      "peak_deficit_mps": 3.2058,
+      "deficit_at_fan_mps": 0.0,
+      "deficit_frac_of_U": 0.0
+    },
+    {
+      "y_m": 9,
+      "x_inlet_m": 0.79,
+      "wake_halfwidth_m": 2.74,
+      "peak_deficit_mps": 3.2304,
+      "deficit_at_fan_mps": 0.0,
+      "deficit_frac_of_U": 0.0
+    },
+    {
+      "y_m": 11,
+      "x_inlet_m": 0.58,
+      "wake_halfwidth_m": 2.729,
+      "peak_deficit_mps": 3.2553,
+      "deficit_at_fan_mps": 0.0,
+      "deficit_frac_of_U": 0.0
+    },
+    {
+      "y_m": 13,
+      "x_inlet_m": 0.37,
+      "wake_halfwidth_m": 2.719,
+      "peak_deficit_mps": 3.2805,
+      "deficit_at_fan_mps": 0.0,
+      "deficit_frac_of_U": 0.0
+    },
+    {
+      "y_m": 15,
+      "x_inlet_m": 0.16,
+      "wake_halfwidth_m": 2.708,
+      "peak_deficit_mps": 3.306,
+      "deficit_at_fan_mps": 0.0,
+      "deficit_frac_of_U": 0.0
+    }
+  ],
+  "aft_bli_fan": {
+    "station_x_m": 18.5,
+    "fuselage_r_m": 0.7,
+    "fan_r_m": 0.9,
+    "fan_area_m2": 2.545,
+    "theta_m": 0.02907,
+    "Re_at_station": 246521608,
+    "avg_ingested_deficit_mps": 9.023,
+    "deficit_frac_of_U": 0.0502
+  },
+  "sensitivity_aft_thrust_split": [
+    {
+      "aft_thrust_split": 0.3,
+      "T_aft_N": 3177.6,
+      "dP_aft_kW": 28.672,
+      "dP_te_fans_kW": 0.3256,
+      "dP_total_kW": 28.998,
+      "pct_of_propulsive_power": 1.296
+    },
+    {
+      "aft_thrust_split": 0.5,
+      "T_aft_N": 5296.0,
+      "dP_aft_kW": 47.787,
+      "dP_te_fans_kW": 0.2326,
+      "dP_total_kW": 48.02,
+      "pct_of_propulsive_power": 2.146
+    },
+    {
+      "aft_thrust_split": 0.7,
+      "T_aft_N": 7414.4,
+      "dP_aft_kW": 66.902,
+      "dP_te_fans_kW": 0.1395,
+      "dP_total_kW": 67.041,
+      "pct_of_propulsive_power": 2.995
+    }
+  ],
+  "baseline": {
+    "aft_thrust_split": 0.5,
+    "T_aft_N": 5296.0,
+    "dP_aft_kW": 47.787,
+    "dP_te_fans_kW": 0.2326,
+    "dP_total_kW": 48.02,
+    "pct_of_propulsive_power": 2.146
+  },
+  "method_notes": [
+    "dP = T * dV is exact for an ideal propulsor ingesting a streamtube with velocity deficit dV (derived in docs/wake-filling.md).",
+    "Wake model: Gaussian in span, momentum-normalized to fuselage drag; spreading half-angle s = wake_spread.",
+    "Aft BLI: fan disc at the tail cone ingests the fuselage boundary layer; deficit = U*theta*P_bl/A_fan.",
+    "TE fans also ingest the wing wake at any span station (baseline DEP effect, not placement-dependent) \u2014 out of scope for this claim."
+  ]
+}
