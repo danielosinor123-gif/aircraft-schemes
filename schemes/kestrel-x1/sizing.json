@@ -1,0 +1,31 @@
+{
+  "scheme": "kestrel-x1",
+  "method": "Breguet range equation + fixed We/W0 fraction; order-of-magnitude [C] estimates",
+  "inputs": {
+    "name": "kestrel-x1",
+    "seats": 76,
+    "pax_kg": 95,
+    "range_nm": 1500,
+    "mach": 0.58,
+    "alt_ft": 25000,
+    "L_D": 20,
+    "eta_prop": 0.75,
+    "tsfc_1hr": 0.55,
+    "we_frac": 0.52,
+    "span_m": 35.0,
+    "wing_area_m2": 75.0,
+    "n_fans": 14,
+    "eta_fan": 0.85,
+    "takeoff_TW": 0.28
+  },
+  "payload_kg": 7220,
+  "MTOW_kg [C]": 21601,
+  "fuel_fraction [C]": 0.1458,
+  "cruise_V_mps [C]": 179.6,
+  "wing_loading_kg_m2 [C]": 288.0,
+  "aspect_ratio [C]": 16.33,
+  "cruise_drag_N [C]": 10592,
+  "cruise_TW [C]": 0.05,
+  "takeoff_TW [T]": 0.28,
+  "per_fan_cruise_power_kW [C]": 159.9
+}

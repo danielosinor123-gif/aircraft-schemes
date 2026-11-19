@@ -1,0 +1,13 @@
+{
+  "scheme": "kestrel-x1",
+  "bbox_m": {
+    "length": 40.06,
+    "span": 35.05,
+    "height": 5.9
+  },
+  "solids": 21,
+  "note": "scheme model; proportions only, not aerodynamic surfaces",
+  "fans_per_side": 7,
+  "strut": true,
+  "te_morphing": true
+}

@@ -1,0 +1,13 @@
+{
+  "scheme": "nova-bwb",
+  "bbox_m": {
+    "length": 40.55,
+    "span": 35.12,
+    "height": 4.74
+  },
+  "solids": 8,
+  "note": "scheme model; proportions only, not aerodynamic surfaces",
+  "fans_aft_bli": 3,
+  "strut": false,
+  "te_morphing": true
+}

@@ -1,0 +1,58 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  sizing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: conceptual sizing + A/B comparison (pure python, no deps)
+        run: |
+          python schemes/kestrel-x1/sizing.py
+          python schemes/nova-bwb/sizing.py
+          python compare.py
+      - name: generated evidence exists
+        run: |
+          test -f docs/comparison.md
+          test -f schemes/kestrel-x1/sizing.json
+          test -f schemes/nova-bwb/sizing.json
+
+  cad:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.13.7"
+      - name: install cadquery
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt
+      - name: build both scheme models + CFD scaffold
+        run: |
+          .venv/bin/python schemes/kestrel-x1/model.py
+          .venv/bin/python schemes/nova-bwb/model.py
+          .venv/bin/python tools/export_mesh.py
+      - name: geometry gate — span must be 34-36 m in both models (regression for BUG-2026-11-19-01)
+        run: |
+          .venv/bin/python -c "
+          import json
+          for s in ['kestrel-x1', 'nova-bwb']:
+              r = json.load(open(f'schemes/{s}/{s}-report.json'))
+              assert 34 <= r['bbox_m']['span'] <= 36, (s, r['bbox_m'])
+          print('span gate ok')
+          "
+      - name: artifacts exist
+        run: |
+          for s in kestrel-x1 nova-bwb; do
+            test -f schemes/$s/$s.step
+            test -f schemes/$s/view-top.svg
+            test -f schemes/$s/cfd/$s-cfd.stl
+            test -f schemes/$s/cfd/blockMeshDict
+          done

@@ -1,0 +1,31 @@
+{
+  "scheme": "nova-bwb",
+  "method": "Breguet range equation + fixed We/W0 fraction; order-of-magnitude [C] estimates",
+  "inputs": {
+    "name": "nova-bwb",
+    "seats": 76,
+    "pax_kg": 95,
+    "range_nm": 1500,
+    "mach": 0.6,
+    "alt_ft": 25000,
+    "L_D": 22,
+    "eta_prop": 0.78,
+    "tsfc_1hr": 0.55,
+    "we_frac": 0.55,
+    "span_m": 35.0,
+    "wing_area_m2": 95.0,
+    "n_fans": 3,
+    "eta_fan": 0.88,
+    "takeoff_TW": 0.26
+  },
+  "payload_kg": 7220,
+  "MTOW_kg [C]": 22191,
+  "fuel_fraction [C]": 0.1246,
+  "cruise_V_mps [C]": 185.8,
+  "wing_loading_kg_m2 [C]": 233.6,
+  "aspect_ratio [C]": 12.89,
+  "cruise_drag_N [C]": 9892,
+  "cruise_TW [C]": 0.0455,
+  "takeoff_TW [T]": 0.26,
+  "per_fan_cruise_power_kW [C]": 696.2
+}
