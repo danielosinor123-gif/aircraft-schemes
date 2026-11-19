@@ -17,6 +17,7 @@ jobs:
           python schemes/kestrel-x1/sizing.py
           python schemes/nova-bwb/sizing.py
           python schemes/kestrel-x1/analysis.py
+          python schemes/kestrel-x1/morph.py
           python compare.py
       - name: generated evidence exists
         run: |
@@ -24,9 +25,10 @@ jobs:
           test -f schemes/kestrel-x1/sizing.json
           test -f schemes/nova-bwb/sizing.json
           test -f schemes/kestrel-x1/analysis/wake-filling.json
+          test -f schemes/kestrel-x1/analysis/morphing-te.json
       - name: generated-evidence freshness gate (fail-closed, exit 2 on stale)
         run: |
-          git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally (sizing.py/analysis.py/compare.py) and commit"; exit 2; }
+          git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json schemes/kestrel-x1/analysis/morphing-te.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally and commit"; exit 2; }
           echo "freshness gate ok"
 
   cad:
@@ -62,3 +64,4 @@ jobs:
             test -f schemes/$s/cfd/$s-cfd.stl
             test -f schemes/$s/cfd/blockMeshDict
           done
+          test -f schemes/kestrel-x1/morph-demo.stl   # CLAIM-2 demo geometry

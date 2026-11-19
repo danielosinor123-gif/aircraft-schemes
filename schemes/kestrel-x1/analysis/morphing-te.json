@@ -1,0 +1,99 @@
+{
+  "scheme": "kestrel-x1",
+  "claim_id": "CLAIM-2",
+  "tag": "[C] computed in-repo by lib/morph.py \u2014 2-D inviscid thin-airfoil theory, NOT validated",
+  "law": {
+    "name": "KESTREL-TE smoothstep morphing camber law (authored in this repo)",
+    "formula": "dz(xi) = A * s^2 * (3 - 2s),  s = (xi - j)/(1 - j),  xi = x/c,  xi >= j",
+    "properties": [
+      "zero slope at junction (no hinge line / no gap)",
+      "rounded tip (C1 continuous everywhere)",
+      "thickness unchanged; camber-only morph (scheme model)",
+      "A > 0 droop (lift), A < 0 reflex (cruise drag reduction)"
+    ],
+    "formula_sign": "dz = -A*s^2*(3-2s), z positive UP, so A>0 = TE down = droop",
+    "junction_j": 0.75,
+    "chord_m": 4.6
+  },
+  "airfoil": {
+    "m": 0.02,
+    "p": 0.4,
+    "note": "NACA 2412-class scheme profile (same as model.py)"
+  },
+  "thin_airfoil_self_test": {
+    "airfoil": "NACA 2412-ish m=0.02 p=0.4",
+    "computed_alpha_L0_deg": -2.077,
+    "published_alpha_L0_deg [E]": -2.07,
+    "abs_err_deg": 0.007,
+    "pass": true
+  },
+  "flap_equivalence": {
+    "junction": 0.75,
+    "dCl_per_rad_hinged_flap": 15.3057,
+    "note": "thin-airfoil theory is exactly linear in flap angle; equiv_hinged_flap_deg = dCl_morph / K"
+  },
+  "results_per_amplitude": [
+    {
+      "amp_frac_chord": 0.0,
+      "amp_mm": 0.0,
+      "Cl_at_0deg": 0.22779,
+      "Cl_at_5deg": 0.7761,
+      "alpha_L0_deg": -2.077,
+      "dCl_at_0deg_vs_0amp": 0.0,
+      "dCm_ac_vs_0amp": 0.0,
+      "equiv_hinged_flap_deg": 0.0
+    },
+    {
+      "amp_frac_chord": 0.005,
+      "amp_mm": 23.0,
+      "Cl_at_0deg": 0.28825,
+      "Cl_at_5deg": 0.83656,
+      "alpha_L0_deg": -2.629,
+      "dCl_at_0deg_vs_0amp": 0.06046,
+      "dCm_ac_vs_0amp": -0.00875,
+      "equiv_hinged_flap_deg": 0.23
+    },
+    {
+      "amp_frac_chord": 0.01,
+      "amp_mm": 46.0,
+      "Cl_at_0deg": 0.34871,
+      "Cl_at_5deg": 0.89702,
+      "alpha_L0_deg": -3.18,
+      "dCl_at_0deg_vs_0amp": 0.12092,
+      "dCm_ac_vs_0amp": -0.01751,
+      "equiv_hinged_flap_deg": 0.45
+    },
+    {
+      "amp_frac_chord": 0.02,
+      "amp_mm": 92.0,
+      "Cl_at_0deg": 0.46963,
+      "Cl_at_5deg": 1.01794,
+      "alpha_L0_deg": -4.283,
+      "dCl_at_0deg_vs_0amp": 0.24184,
+      "dCm_ac_vs_0amp": -0.03502,
+      "equiv_hinged_flap_deg": 0.91
+    },
+    {
+      "amp_frac_chord": 0.03,
+      "amp_mm": 138.0,
+      "Cl_at_0deg": 0.59055,
+      "Cl_at_5deg": 1.13886,
+      "alpha_L0_deg": -5.385,
+      "dCl_at_0deg_vs_0amp": 0.36276,
+      "dCm_ac_vs_0amp": -0.05253,
+      "equiv_hinged_flap_deg": 1.36
+    }
+  ],
+  "headline": {
+    "max_amp_frac_chord": 0.03,
+    "dCl_at_0deg": 0.36276,
+    "equiv_hinged_flap_deg": 1.36,
+    "dCm_ac": -0.05253
+  },
+  "claim": "CLAIM-2: the KESTREL-TE smoothstep morphing law (authored in this repo, first published in commit history 2026-11-19) produces dCl = 0.36276 at A = 0.03 of chord \u2014 equivalent to a hinged flap of 1.36 deg at the same junction \u2014 but with no hinge line or gap. [C] 2-D inviscid estimate; falsifiable by CFD on the morphed geometry (see docs/morphing-te.md).",
+  "method_notes": [
+    "Glauert thin-airfoil integrals on a theta grid (N=1440), trapezoid rule; slopes by central differences.",
+    "Self-test: plain NACA 2412 alpha_L0 must match the published ~-2.07 deg within 0.25 deg.",
+    "2-D inviscid: no viscous hinge-moment or gap-drag penalty modeled; those favor the morphing law in reality, so treat dCl as a lower-confidence estimate and the comparison as qualitative."
+  ]
+}

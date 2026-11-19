@@ -42,3 +42,14 @@ outdir = Path(__file__).parent
 aero.export_all(comp, outdir, "kestrel-x1")
 aero.write_report(outdir, "kestrel-x1", comp,
                   {"fans_per_side": len(geom.FAN_YS), "strut": True, "te_morphing": True})
+
+# CLAIM-2 demo artifact: short wing strip with the KESTREL-TE morphing camber law
+# applied (2% chord droop at 75% junction). Main geometry above is UNMORPHED.
+if geom.MORPH_DEMO_AMP:
+    from lib import morph as _morph
+    cf = lambda u: _morph.dz_over_c(u, geom.MORPH_JUNCTION, geom.MORPH_DEMO_AMP)
+    demo = aero.lofted_wing(geom.LE_X, 0.5, 2.5, geom.CHORD_ROOT, geom.CHORD_ROOT,
+                            0.0, camber_fn=cf)
+    cq.exporters.export(demo, str(outdir / "morph-demo.stl"))
+    print("saved morph-demo.stl (KESTREL-TE law, amp=%.3f c, junction=%.2f)"
+          % (geom.MORPH_DEMO_AMP, geom.MORPH_JUNCTION))

@@ -1,5 +1,15 @@
 # BUGS / provenance log
 
+## BUG-2026-11-19-05 — thin-airfoil integrator: wrong grid spacing flipped the lift sign
+
+First version of `lib/morph.py` sampled the camber slope on a uniform-xi grid
+but integrated the Glauert integrals assuming uniform-theta spacing. Result:
+NACA 2412 self-test gave alpha_L0 = -1.53 deg (published -2.07) and droop gave
+NEGATIVE dCl — physically impossible. Caught by the self-test assertion before
+any number was committed. **Fix:** trapezoid over the actual per-interval
+dtheta. After fix: alpha_L0 = -2.077 deg (err 0.007 deg, pass), droop A=0.03c
+gives dCl = +0.363. The self-test stays in `run()` permanently.
+
 ## BUG-2026-11-19-04 — CFD case used nu = 3.27e-5; ISA at 25,000 ft gives 2.805e-5
 
 The first OpenFOAM cases (`tools/cfd-template/constant/transportProperties`,

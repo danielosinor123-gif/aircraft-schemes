@@ -11,8 +11,9 @@ import cadquery as cq
 from cadquery import Vector
 
 
-def naca4(m, p, t, chord, n=48):
-    """Closed NACA 4-digit profile loop as (x, z) points, LE at x=0, chord along +x."""
+def naca4(m, p, t, chord, n=48, camber_fn=None):
+    """Closed NACA 4-digit profile loop as (x, z) points, LE at x=0, chord along +x.
+    camber_fn(xi)->dz (chord units) adds a morphing-camber perturbation (CLAIM-2)."""
     up, lo = [], []
     for i in range(n + 1):
         b = math.pi * i / n
@@ -26,6 +27,9 @@ def naca4(m, p, t, chord, n=48):
         else:
             yc = m / (1 - p)**2 * ((1 - 2 * p) + 2 * p * u - u**2) * chord
             dyc = 2 * m / (1 - p)**2 * (p - u)
+        if camber_fn is not None:
+            yc += camber_fn(u) * chord
+            dyc += (camber_fn(u + 1e-6) - camber_fn(u)) / 1e-6
         th = math.atan(dyc)
         up.append((x - yt * math.sin(th), yc + yt * math.cos(th)))
         lo.append((x + yt * math.sin(th), yc - yt * math.cos(th)))
@@ -38,10 +42,11 @@ def chord_at(y, root_y, tip_y, chord_root, chord_tip):
 
 
 def wing_wire(le_x, y, root_y, tip_y, chord_root, chord_tip, sweep_tip,
-              m=0.02, p=0.4, t=0.12):
+              m=0.02, p=0.4, t=0.12, camber_fn=None):
     f = (y - root_y) / (tip_y - root_y)
     sw = sweep_tip * f
-    pts = naca4(m, p, t, chord_at(y, root_y, tip_y, chord_root, chord_tip))
+    pts = naca4(m, p, t, chord_at(y, root_y, tip_y, chord_root, chord_tip),
+                camber_fn=camber_fn)
     return cq.Wire.makePolygon([Vector(le_x + sw + x, y, z) for x, z in pts], close=True)
 
 

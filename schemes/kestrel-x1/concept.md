@@ -76,7 +76,7 @@ claim is asserted against the model in CI, not just written here.
 | Distributed electric propulsion, wake filling | **NASA N3-X**, LEAPTech | DEP + wake filling targeted at large drag savings |
 | Aft-fuselage BLI fan | **NASA STARC-ABL** | BLI reported at roughly single-digit to ~10% fuel burn |
 | Blended-wing direction | **Airbus MAVERIC** | Airbus cites ~20% fuel burn for BWB |
-| Morphing trailing edge | FlexSys / NASA **adaptive compliant trailing edge** | noise and parts-count reduction vs hinged surfaces |
+| Morphing trailing edge | **KESTREL-TE law — authored in this repo** (CLAIM-2, `docs/morphing-te.md`, `lib/morph.py`); FlexSys/NASA ACTE as published inspiration [E] | ΔCl = +0.36 at 3%-chord droop ≈ 1.36° hinged flap, no hinge gap [C] |
 
 > Note: web search was unavailable when this doc was written; the figures above are
 > the commonly cited published estimates for these programs. **Verify against the
@@ -85,9 +85,10 @@ claim is asserted against the model in CI, not just written here.
 ## 5. Claim discipline — what this document does and does not claim
 
 - DOES claim: a coherent integration of published concepts, with a parametric
-  CAD model, in-repo conceptual sizing (`sizing.json`), one computed and
-  falsifiable claim (CLAIM-1, `docs/wake-filling.md`), and coarse in-repo CFD
-  runs with logged residuals (`cfd/results.json`, [M]).
+  CAD model, in-repo conceptual sizing (`sizing.json`), coarse in-repo CFD
+  (`cfd/results.json`, [M]), and **two computed, falsifiable claims authored in
+  this repo**: CLAIM-1 wake-filling benefit (`docs/wake-filling.md`) and
+  CLAIM-2 the KESTREL-TE morphing trailing-edge law (`docs/morphing-te.md`).
 - DOES NOT claim: any measured or validated performance. No number marked
   [T]/[E]/[C]/[M] is a result. Nothing here may be quoted as "KESTREL-X1
   achieves X%".
@@ -115,6 +116,7 @@ pip install -r requirements.txt          # or: uv pip install -r requirements.tx
 python schemes/kestrel-x1/model.py       # STEP/STL/SVG views + kestrel-x1-report.json
 python schemes/kestrel-x1/sizing.py      # sizing.json
 python schemes/kestrel-x1/analysis.py    # analysis/wake-filling.json — CLAIM-1 [C]
+python schemes/kestrel-x1/morph.py       # analysis/morphing-te.json — CLAIM-2 [C]
 python tools/export_mesh.py              # cfd/ STL tessellation + blockMeshDict scaffold
 python compare.py                        # docs/comparison.md (A/B vs nova-bwb)
 ```

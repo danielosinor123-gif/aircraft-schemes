@@ -21,9 +21,12 @@ A/B comparison (generated): `docs/comparison.md` via `python compare.py`.
 First real CFD runs (OpenFOAM v1912, coarse mesh, [M] tagged with caveats):
 `docs/cfd-results.md` + `schemes/*/cfd/results.json`, reproducible via
 `tools/cfd-template/` and `tools/calc_forces.py`.
-KESTREL-X1's one computed claim — the wake-filling benefit (CLAIM-1, ≈2.1% of
-cruise power, dominated by the aft BLI fan): `docs/wake-filling.md` +
-`schemes/kestrel-x1/analysis/wake-filling.json` via `lib/wake_filling.py`.
+KESTREL-X1's two computed, authored claims: CLAIM-1 wake-filling benefit
+(≈2.1% of cruise power, dominated by the aft BLI fan) in `docs/wake-filling.md`,
+and CLAIM-2 the KESTREL-TE morphing trailing-edge law (ΔCl = +0.36 at 3%-chord
+droop, equivalent to a 1.36° hinged flap with no hinge gap) in
+`docs/morphing-te.md` — both with JSON outputs, self-tests, and CI freshness
+gates.
 
 ## Verify this repo yourself (fresh clone)
 
@@ -35,6 +38,7 @@ python schemes/nova-bwb/model.py
 python schemes/kestrel-x1/sizing.py       # sizing.json [C] estimates
 python schemes/nova-bwb/sizing.py
 python schemes/kestrel-x1/analysis.py     # analysis/wake-filling.json — CLAIM-1 [C]
+python schemes/kestrel-x1/morph.py        # analysis/morphing-te.json — CLAIM-2 [C]
 python compare.py                         # docs/comparison.md
 python tools/export_mesh.py               # cfd/ STL tessellation + OpenFOAM blockMeshDict scaffold
 ```
@@ -50,6 +54,7 @@ committed generated evidence (`sizing.json`, `wake-filling.json`,
 lib/aero.py        shared CadQuery helpers (NACA profiles, lofts, mirror, exports)
 lib/sizing.py      Breguet + fixed-We conceptual sizing -> sizing.json
 lib/wake_filling.py  CLAIM-1: wake-filling benefit from model geometry -> wake-filling.json
+lib/morph.py       CLAIM-2: KESTREL-TE morphing law + thin-airfoil analysis -> morphing-te.json
 schemes/<name>/    geom.py (pure-python geometry, shared model<->analysis), model.py,
                    sizing.py, analysis.py (kestrel-x1), concept.md, artifacts, cfd/
 tools/export_mesh.py  fine STL + blockMeshDict scaffold per scheme

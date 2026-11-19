@@ -14,6 +14,9 @@ SWEEP_TIP = 1.4
 FAN_YS = [3, 5, 7, 9, 11, 13, 15]
 FAN_R = 0.32
 FAN_L = 1.4
+# CLAIM-2: KESTREL-TE morphing trailing edge (law in lib/morph.py).
+MORPH_JUNCTION = 0.75   # morph starts at 75% chord
+MORPH_DEMO_AMP = 0.02   # demo droop (2% chord) exported as morph-demo.stl by model.py
 # Fuselage loft sections (x, radius) — single source of truth for model.py
 # and for the wake-filling analysis (wetted area, wake station).
 FUS_SECTIONS = [(-20, 0.02), (-18, 0.9), (-14, 1.55), (-6, 1.7), (8, 1.7),
