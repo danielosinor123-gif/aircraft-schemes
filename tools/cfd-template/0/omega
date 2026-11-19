@@ -1,0 +1,13 @@
+FoamFile { version 2.0; format ascii; class volScalarField; location "0"; object omega; }
+dimensions      [0 0 -1 0 0 0 0];
+internalField   uniform 2.45;
+boundaryField
+{
+    inlet    { type fixedValue;  value uniform 2.45; }
+    outlet   { type inletOutlet; inletValue uniform 2.45; value uniform 2.45; }
+    back     { type symmetryPlane; }
+    front    { type symmetryPlane; }
+    bottom   { type symmetryPlane; }
+    top      { type symmetryPlane; }
+    aircraft { type fixedValue;  value uniform 100; }
+}

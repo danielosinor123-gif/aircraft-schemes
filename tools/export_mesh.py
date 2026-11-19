@@ -45,11 +45,12 @@ blocks (
 );
 edges ();
 boundary (
-    inlet  {{ type patch; faces ((0 4 7 3)); }}
-    outlet {{ type patch; faces ((1 2 6 5)); }}
-    top    {{ type symmetryPlane; faces ((3 7 6 2)); }}
-    bottom {{ type symmetryPlane; faces ((0 1 5 4)); }}
-    sides  {{ type patch; faces ((0 3 2 1) (4 5 6 7)); }}
+    inlet  {{ type patch; faces ((0 3 7 4)); }}         // x-min
+    outlet {{ type patch; faces ((1 2 6 5)); }}         // x-max
+    back   {{ type symmetryPlane; faces ((0 1 5 4)); }} // y-min
+    front  {{ type symmetryPlane; faces ((3 2 6 7)); }} // y-max
+    bottom {{ type symmetryPlane; faces ((0 1 2 3)); }} // z-min
+    top    {{ type symmetryPlane; faces ((4 5 6 7)); }} // z-max
 );
 mergedPatchPairs ();
 """
@@ -62,7 +63,9 @@ CFD_README = """# CFD scaffold (geometry only — no results claimed)
 3. `surfaceFeatureExtract`, then `snappyHexMesh` refining around the STL, then `checkMesh`.
 4. The boundary types above are placeholders. A real case needs a proper far-field
    (inlet/outlet or far-field), wall boundary on the aircraft, and a turbulence model.
-   None of that has been done here — this directory is a starting point, not a result.
+
+NOTE: coarse solver runs HAVE since been done on these surfaces — see
+`docs/cfd-results.md` and `results.json` in this directory ([M] tag, caveated).
 """
 
 

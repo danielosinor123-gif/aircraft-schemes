@@ -1,0 +1,31 @@
+{
+  "patch": "aircraft",
+  "nFaces": 13956,
+  "patch_area_m2": 971.48,
+  "F_pressure_N": [
+    242502.49,
+    759.71,
+    21313.85
+  ],
+  "q_Pa": 9476.2,
+  "Cd_pressure": 0.26938,
+  "Cl_pressure": 0.02368,
+  "note": "pressure forces integrated from solved p; viscous drag estimated separately",
+  "solver": "OpenFOAM v1912 simpleFoam, kOmegaSST, serial",
+  "mesh_cells": 54429,
+  "iterations": 206,
+  "converged_by_residualControl": true,
+  "rho": 0.549,
+  "U_mps": 185.8,
+  "Aref_m2": 95,
+  "Re": 230403364,
+  "Cd_skinfriction_est": 0.01941,
+  "final_residuals": {
+    "p": "1.7e-06",
+    "Ux": "8.8e-07",
+    "Uy": "9.6e-06",
+    "Uz": "7.6e-06"
+  },
+  "Cd_total_est": 0.28879,
+  "tag": "[M] computed in-repo by OpenFOAM on a coarse mesh; pressure forces integrated from solved p; skin friction analytic estimate. NOT validated."
+}

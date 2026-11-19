@@ -1,0 +1,97 @@
+// OpenFOAM v1912 case file (banner elided to avoid backslash-continuation)
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// Coarse castellated mesh around the scheme surface. No layer addition (speed).
+castellatedMesh true;
+snap              false;
+addLayers         false;
+mergeTolerance    1e-4;
+
+geometry
+{
+    aircraft.stl
+    {
+        type triSurfaceMesh;
+        name aircraft;
+    }
+}
+
+castellatedMeshControls
+{
+    maxLocalCells        200000;
+    maxGlobalCells       600000;
+    minRefinementCells   10;
+    maxLoadUnbalance     0.10;
+    nCellsBetweenLevels  2;
+    features             ();
+    refinementSurfaces
+    {
+        aircraft
+        {
+            level (2 3);
+            patchInfo { type wall; }
+        }
+    }
+    resolveFeatureAngle 30;
+    refinementRegions    {};
+    locationInMesh       (0 0 5);   // fluid point: above fuselage, clear of the fin
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 2.0;
+    nSolveIter 30;
+    nRelaxIter 5;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+    layers {};
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.1;
+    nGrow 0;
+    featureAngle 60;
+    nRelaxIter 3;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedThicknessNearZero 0.0;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+meshQualityControls
+{
+    maxNonOrtho 65;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave 80;
+    minVol 1e-13;
+    minTetQuality 1e-15;
+    minArea 1e-13;
+    minTwist 0.02;
+    minDeterminant 0.001;
+    minFaceWeight 0.02;
+    minVolRatio 0.01;
+    minTriangleTwist 0.02;
+    nSmoothScale 4;
+    errorReduction 0.75;
+}
+
+relaxed
+{
+    maxNonOrtho 75;
+}
+
+cacheLevel 2;

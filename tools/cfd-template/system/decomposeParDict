@@ -1,0 +1,13 @@
+// OpenFOAM v1912 case file (banner elided to avoid backslash-continuation)
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      decomposeParDict;
+}
+numberOfSubdomains 4;
+method          hierarchical;
+n               (2 2 1);
+distributed     no;
+roots           ();

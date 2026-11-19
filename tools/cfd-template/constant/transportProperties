@@ -1,0 +1,4 @@
+// OpenFOAM v1912 case file (banner elided to avoid backslash-continuation)
+FoamFile { version 2.0; format ascii; class dictionary; object transportProperties; }
+transportModel  Newtonian;
+nu              3.27e-5;   // ISA 25,000 ft: mu ~1.79e-5 / rho 0.549

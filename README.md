@@ -2,10 +2,12 @@
 
 Conceptual aircraft design schemes — portfolio artifacts, built evidence-first.
 
-> **Nothing here is validated.** No CFD, wind tunnel, structural, stability, or
+> **Nothing here is validated.** No wind tunnel, structural, stability, or
 > certification work has been done. Number tags everywhere: **[T]** design target ·
 > **[E]** published estimate from a cited program (verify against primary sources) ·
-> **[C]** computed in this repo by order-of-magnitude methods (`lib/sizing.py`).
+> **[C]** computed in this repo by order-of-magnitude methods (`lib/sizing.py`) ·
+> **[M]** computed in this repo by OpenFOAM CFD — coarse mesh, incompressible at
+> M 0.58, not validated (see `docs/cfd-results.md`).
 
 ## Schemes
 
@@ -15,6 +17,9 @@ Conceptual aircraft design schemes — portfolio artifacts, built evidence-first
 | `schemes/nova-bwb` | Blended wing body + 3 aft BLI fans + winglets, hybrid-electric (A/B baseline) | `schemes/nova-bwb/concept.md` |
 
 A/B comparison (generated): `docs/comparison.md` via `python compare.py`.
+First real CFD runs (OpenFOAM v1912, coarse mesh, [M] tagged with caveats):
+`docs/cfd-results.md` + `schemes/*/cfd/results.json`, reproducible via
+`tools/cfd-template/` and `tools/calc_forces.py`.
 
 ## Verify this repo yourself (fresh clone)
 

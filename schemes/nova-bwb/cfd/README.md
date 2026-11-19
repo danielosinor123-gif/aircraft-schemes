@@ -5,4 +5,6 @@
 3. `surfaceFeatureExtract`, then `snappyHexMesh` refining around the STL, then `checkMesh`.
 4. The boundary types above are placeholders. A real case needs a proper far-field
    (inlet/outlet or far-field), wall boundary on the aircraft, and a turbulence model.
-   None of that has been done here — this directory is a starting point, not a result.
+
+NOTE: coarse solver runs HAVE since been done on these surfaces — see
+`docs/cfd-results.md` and `results.json` in this directory ([M] tag, caveated).
