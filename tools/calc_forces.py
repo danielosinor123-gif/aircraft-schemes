@@ -1,10 +1,12 @@
 """Compute pressure force coefficients on a wall patch from an OpenFOAM case,
 by integrating the solved pressure field over the patch faces (polyMesh geometry).
 
-Usage: python3 calc_forces.py <case_dir> <patch> <rho> <U> <Aref> <time_dir>
+Usage: python3 calc_forces.py <case_dir> <patch> <rho> <U> <Aref> <time_dir> [alpha_deg]
 Prints JSON with pressure forces only (viscous drag is estimated separately).
+alpha_deg rotates the drag/lift projection axes (inflow in the x-z plane).
 """
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -72,6 +74,7 @@ def find_key(obj, key):
 def main():
     case, patch = sys.argv[1], sys.argv[2]
     rho, U, Aref, tdir = float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]), sys.argv[6]
+    alpha_deg = float(sys.argv[7]) if len(sys.argv) > 7 else 0.0   # AoA: inflow rotated in x-z plane
     pm = Path(case) / "constant" / "polyMesh"
 
     raw = load(pm / "points")
@@ -128,12 +131,19 @@ def main():
     F = [rho * c for c in F]           # p is kinematic pressure [m^2/s^2]
 
     q = 0.5 * rho * U * U
+    a = math.radians(alpha_deg)
+    drag_dir = (math.cos(a), 0.0, math.sin(a))     # along the inflow
+    lift_dir = (-math.sin(a), 0.0, math.cos(a))    # perpendicular, +z at alpha=0
+    Fd = sum(F[i] * drag_dir[i] for i in range(3))
+    Fl = sum(F[i] * lift_dir[i] for i in range(3))
     print(json.dumps({
         "patch": patch, "nFaces": n, "patch_area_m2": round(area, 2),
+        "alpha_deg": alpha_deg,
         "F_pressure_N": [round(c, 2) for c in F], "q_Pa": round(q, 1),
-        "Cd_pressure": round(F[0] / (q * Aref), 5),
-        "Cl_pressure": round(F[2] / (q * Aref), 5),
-        "note": "pressure forces integrated from solved p; viscous drag estimated separately",
+        "Cd_pressure": round(Fd / (q * Aref), 5),
+        "Cl_pressure": round(Fl / (q * Aref), 5),
+        "note": "pressure forces integrated from solved p, projected onto flow-aligned "
+                "drag/lift axes; viscous drag estimated separately",
     }, indent=2))
 
 

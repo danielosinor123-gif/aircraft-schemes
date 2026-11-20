@@ -1,5 +1,22 @@
 # BUGS / provenance log
 
+## BUG-2026-11-20-06 — stale force-integrator copy reported an unprojected, non-monotonic α sweep
+
+While packaging the refined-mesh α sweep, the scratch copy of
+`tools/calc_forces.py` in `/root/cfd-cases/` predated the α-aware update, so the
+sweep runs were first reported with forces projected on the **body** x/z axes
+instead of the flow-aligned drag/lift axes. That made Cl *decrease* with α
+(0.037 → 0.003 over −2°..+6°), which is physically backwards — the alarm that
+caught it. **Fix:** repo `tools/calc_forces.py` takes an optional
+`alpha_deg` argument (drag dir = (cosα, 0, sinα), lift dir = (−sinα, 0, cosα));
+all five α points were recalculated from the saved fields with the fixed
+integrator. Deeper diagnosis (logged in `docs/cfd-results.md`): even correctly
+projected, Cl stays ≈ 0.003–0.037 because the wing is under-resolved on this
+mesh (~1–2 cells across the airfoil) — so the sweep is packaged in
+`cfd/drag-polar.json` as **INVALID as a polar**, with Cd kept as fuselage-dominated
+[M] and the [T] L/D left UNCONFIRMED. Cold-start α=6 confirmed the lift deficit
+is mesh-related, not warm-start.
+
 ## BUG-2026-11-19-05 — thin-airfoil integrator: wrong grid spacing flipped the lift sign
 
 First version of `lib/morph.py` sampled the camber slope on a uniform-xi grid

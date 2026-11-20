@@ -26,6 +26,26 @@ jobs:
           test -f schemes/nova-bwb/sizing.json
           test -f schemes/kestrel-x1/analysis/wake-filling.json
           test -f schemes/kestrel-x1/analysis/morphing-te.json
+          test -f schemes/kestrel-x1/cfd/results.json
+          test -f schemes/kestrel-x1/cfd/drag-polar.json
+      - name: CFD evidence schema check (fail-closed)
+        run: |
+          python3 - <<'EOF'
+          import json
+          d = json.load(open('schemes/kestrel-x1/cfd/drag-polar.json'))
+          assert d['tag'].startswith('[M]'), d['tag']
+          assert d['mesh']['cells'] == 158783
+          assert isinstance(d['runs'], list) and len(d['runs']) == 5
+          alphas = sorted(r['alpha_deg'] for r in d['runs'])
+          assert alphas == [-2.0, 0.0, 2.0, 4.0, 6.0], alphas
+          for r in d['runs']:
+              assert 0 < r['Cd_pressure'] < 1 and -1 < r['Cl_pressure'] < 1
+          assert 'INVALID' in d['alpha_sweep_validity']
+          assert any('UNCONFIRMED' in v for v in [d['design_point']['note']])
+          r0 = json.load(open('schemes/kestrel-x1/cfd/results.json'))
+          assert r0['scheme'] == 'kestrel-x1'
+          print('cfd evidence schema ok')
+          EOF
       - name: generated-evidence freshness gate (fail-closed, exit 2 on stale)
         run: |
           git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json schemes/kestrel-x1/analysis/morphing-te.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally and commit"; exit 2; }

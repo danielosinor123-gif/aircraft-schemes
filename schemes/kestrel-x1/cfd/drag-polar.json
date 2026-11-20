@@ -1,0 +1,122 @@
+{
+  "scheme": "kestrel-x1",
+  "tag": "[M] computed in-repo by OpenFOAM v1912 \u2014 NOT validated; see caveats",
+  "case": "simpleFoam (incompressible) + kOmegaSST, serial, ISA 25,000 ft, M0.58, nu=2.805e-5 (BUG-2026-11-19-04 fix)",
+  "mesh": {
+    "cells": 158783,
+    "wall_faces": 40068,
+    "wall_area_m2": 781.49,
+    "refinement": "snappyHexMesh castellated, level (3 4), no boundary layers",
+    "coarse_mesh_cells": 50873
+  },
+  "solver": {
+    "iterations_alpha0": 271,
+    "per_alpha_iters": "~250 (warm start from alpha=0 field)",
+    "final_residuals": {
+      "p": "~3e-07",
+      "U": "~1e-06..1e-05",
+      "k/omega": "~1e-07..1e-09"
+    },
+    "rho": 0.54895,
+    "U_mps": 179.61,
+    "q_Pa": 8854.5,
+    "Aref_m2": 75.0,
+    "Re_L": 256512535
+  },
+  "runs": [
+    {
+      "alpha_deg": 0.0,
+      "Cd_pressure": 0.23301,
+      "Cl_pressure": 0.02735,
+      "F_pressure_N": [
+        154736.12,
+        87.13,
+        18163.6
+      ],
+      "nFaces": 40068,
+      "Cd_skinfriction_est": 0.0195,
+      "Cd_total_est": 0.25251,
+      "L_D_est": 0.11
+    },
+    {
+      "alpha_deg": -2.0,
+      "Cd_pressure": 0.24103,
+      "Cl_pressure": 0.0369,
+      "F_pressure_N": [
+        160821.46,
+        87.48,
+        18906.86
+      ],
+      "nFaces": 40068,
+      "Cd_skinfriction_est": 0.0195,
+      "Cd_total_est": 0.26053,
+      "L_D_est": 0.14
+    },
+    {
+      "alpha_deg": 2.0,
+      "Cd_pressure": 0.22462,
+      "Cl_pressure": 0.01836,
+      "F_pressure_N": [
+        148649.65,
+        87.95,
+        17388.94
+      ],
+      "nFaces": 40068,
+      "Cd_skinfriction_est": 0.0195,
+      "Cd_total_est": 0.24412,
+      "L_D_est": 0.08
+    },
+    {
+      "alpha_deg": 4.0,
+      "Cd_pressure": 0.21582,
+      "Cl_pressure": 0.01021,
+      "F_pressure_N": [
+        142503.75,
+        88.16,
+        16762.93
+      ],
+      "nFaces": 40068,
+      "Cd_skinfriction_est": 0.0195,
+      "Cd_total_est": 0.23532,
+      "L_D_est": 0.04
+    },
+    {
+      "alpha_deg": 6.0,
+      "Cd_pressure": 0.20672,
+      "Cl_pressure": 0.0028,
+      "F_pressure_N": [
+        136335.28,
+        88.16,
+        16197.73
+      ],
+      "nFaces": 40068,
+      "Cd_skinfriction_est": 0.0195,
+      "Cd_total_est": 0.22622,
+      "L_D_est": 0.01
+    }
+  ],
+  "mesh_convergence_alpha0": {
+    "coarse_50k": {
+      "Cd_pressure": 0.26879,
+      "Cl_pressure": -0.21405
+    },
+    "refined_159k": {
+      "Cd_pressure": 0.23301,
+      "Cl_pressure": 0.02735
+    },
+    "note": "Cd drops 13% with refinement; the coarse-mesh Cl=-0.21 fin/stab asymmetry artifact disappears at +0.027 on the refined mesh \u2014 consistent with a near-symmetric body at alpha=0."
+  },
+  "design_point": {
+    "Cl_target_from_sizing": 0.319,
+    "note": "L/D at design point NOT computable: the alpha sweep below does not develop physical lift (see caveats), so the [T] L/D=20-22 remains UNCONFIRMED."
+  },
+  "alpha_sweep_validity": "INVALID for a drag polar \u2014 see caveats",
+  "caveats": [
+    "Wing is under-resolved: surface cells ~0.25-0.5 m vs wing thickness 0.55 m root / 0.18 m tip (~1-2 cells across the airfoil). Pressure lift on the wing is not captured: measured Cl stays ~0.003-0.037 over alpha=-2..+6 deg (should rise ~0.1/deg). Diagnosed via wall-pressure split (upper -3872 vs lower -3376 m^2/s^2 at alpha=6 -> only ~Cl 0.03). Drag is fuselage-dominated and plausible.",
+    "Incompressible solver at M0.58 (M^2=0.34, not negligible) \u2014 rhoSimpleFoam is the next rung.",
+    "No boundary layers (castellated only) \u2014 skin friction is an analytic estimate, not solved.",
+    "y/z far-field modeled as symmetry planes (blockage), not a true far-field.",
+    "SIMPLE pseudo-time: warm-started alpha runs converge locally (residuals ~1e-6) but circulation may be under-developed.",
+    "Next steps: level (5 6) surface refinement + boundary layers (needs more RAM than this 5 GB box), rhoSimpleFoam, freestream far-field BCs, longer runs; then re-extract the polar."
+  ]
+}

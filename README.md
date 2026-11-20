@@ -20,7 +20,10 @@ Conceptual aircraft design schemes — portfolio artifacts, built evidence-first
 A/B comparison (generated): `docs/comparison.md` via `python compare.py`.
 First real CFD runs (OpenFOAM v1912, coarse mesh, [M] tagged with caveats):
 `docs/cfd-results.md` + `schemes/*/cfd/results.json`, reproducible via
-`tools/cfd-template/` and `tools/calc_forces.py`.
+`tools/cfd-template/` and `tools/calc_forces.py`. Refined-mesh (158,783 cells)
+α-sweep packaging: `schemes/kestrel-x1/cfd/drag-polar.json` — the sweep is
+declared **invalid as a polar** (under-resolved wing; see `docs/cfd-results.md`),
+with the honest Cd and the [T] L/D left UNCONFIRMED.
 KESTREL-X1's two computed, authored claims: CLAIM-1 wake-filling benefit
 (≈2.1% of cruise power, dominated by the aft BLI fan) in `docs/wake-filling.md`,
 and CLAIM-2 the KESTREL-TE morphing trailing-edge law (ΔCl = +0.36 at 3%-chord
