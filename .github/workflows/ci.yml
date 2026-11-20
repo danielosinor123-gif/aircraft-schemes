@@ -43,7 +43,8 @@ jobs:
           assert 'INVALID' in d['alpha_sweep_validity']
           assert any('UNCONFIRMED' in v for v in [d['design_point']['note']])
           r0 = json.load(open('schemes/kestrel-x1/cfd/results.json'))
-          assert r0['scheme'] == 'kestrel-x1'
+          assert r0['patch'] == 'aircraft' and r0['mesh_cells'] == 50873
+          assert r0['tag'].startswith('[M]')
           print('cfd evidence schema ok')
           EOF
       - name: generated-evidence freshness gate (fail-closed, exit 2 on stale)
