@@ -18,14 +18,19 @@ jobs:
           python schemes/nova-bwb/sizing.py
           python schemes/kestrel-x1/analysis.py
           python schemes/kestrel-x1/morph.py
+          python schemes/kestrel-x1/gust.py
+          python schemes/kestrel-x1/econ.py
           python compare.py
       - name: generated evidence exists
         run: |
           test -f docs/comparison.md
+          test -f docs/passenger-first.md
           test -f schemes/kestrel-x1/sizing.json
           test -f schemes/nova-bwb/sizing.json
           test -f schemes/kestrel-x1/analysis/wake-filling.json
           test -f schemes/kestrel-x1/analysis/morphing-te.json
+          test -f schemes/kestrel-x1/analysis/gust-alleviation.json
+          test -f schemes/kestrel-x1/analysis/energy-cost.json
           test -f schemes/kestrel-x1/cfd/results.json
           test -f schemes/kestrel-x1/cfd/drag-polar.json
       - name: CFD evidence schema check (fail-closed)
@@ -45,11 +50,18 @@ jobs:
           r0 = json.load(open('schemes/kestrel-x1/cfd/results.json'))
           assert r0['patch'] == 'aircraft' and r0['mesh_cells'] == 50873
           assert r0['tag'].startswith('[M]')
-          print('cfd evidence schema ok')
+          g = json.load(open('schemes/kestrel-x1/analysis/gust-alleviation.json'))
+          assert g['claim_id'] == 'CLAIM-3' and g['self_tests']['pass'] is True
+          assert len(g['results_per_gust']) == 3
+          assert 0 < g['headline']['gust_50fps']['morph_cancel_frac_at_A_max'] <= 1
+          e = json.load(open('schemes/kestrel-x1/analysis/energy-cost.json'))
+          assert e['claim_id'] == 'ECON-1' and e['self_test']['pass'] is True
+          assert e['mission']['breakeven_elec_price_usd_per_kwh'] > 0
+          print('cfd + claim evidence schema ok')
           EOF
       - name: generated-evidence freshness gate (fail-closed, exit 2 on stale)
         run: |
-          git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json schemes/kestrel-x1/analysis/morphing-te.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally and commit"; exit 2; }
+          git diff --exit-code -- schemes/kestrel-x1/sizing.json schemes/nova-bwb/sizing.json schemes/kestrel-x1/analysis/wake-filling.json schemes/kestrel-x1/analysis/morphing-te.json schemes/kestrel-x1/analysis/gust-alleviation.json schemes/kestrel-x1/analysis/energy-cost.json docs/comparison.md || { echo "GATE FAIL: committed generated evidence is stale — regenerate locally and commit"; exit 2; }
           echo "freshness gate ok"
 
   cad:

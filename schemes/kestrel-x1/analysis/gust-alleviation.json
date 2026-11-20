@@ -1,0 +1,98 @@
+{
+  "scheme": "kestrel-x1",
+  "claim_id": "CLAIM-3",
+  "tag": "[C] computed in-repo by lib/gust.py \u2014 quasi-steady gust loads + morphing-TE alleviation authority. NOT validated; no unsteady (Kussner) or structural dynamics.",
+  "question": "How much does a vertical gust bump the load factor, and how much of that can the KESTREL-TE morphing law cancel?",
+  "method": {
+    "Cl_alpha_3D_per_rad": 5.5976,
+    "Cl_alpha_formula": "a0*AR/(AR+2), a0=2*pi (Helmbold lifting-line)",
+    "gust_model": "sharp-edged vertical gust, quasi-steady dalpha = atan(w/U)",
+    "dCl_dA_per_chord_frac": 12.0921,
+    "dCl_dA_source": "finite difference of lib/morph.py Glauert solver (CLAIM-2 law), alpha=0",
+    "A_max_demonstrated": 0.03,
+    "dCl_morph_at_A_max": 0.3628
+  },
+  "cruise_point": {
+    "W_N": 211833.0,
+    "S_m2": 75.0,
+    "AR": 16.33,
+    "U_mps": 179.61,
+    "rho_kg_m3": 0.54895,
+    "q_Pa": 8854.5
+  },
+  "self_tests": {
+    "thin_airfoil_dCl_dalpha": {
+      "computed_dCl_dalpha_2d_per_rad": 6.2832,
+      "thin_airfoil_2pi": 6.2832,
+      "abs_err": 0.0,
+      "pass": true
+    },
+    "gust_dn_hand_check": {
+      "dn_at_50fps": 1.4854,
+      "expected_range": [
+        1.3,
+        1.7
+      ],
+      "pass": true
+    },
+    "pass": true
+  },
+  "results_per_gust": [
+    {
+      "gust_mps": 5.0,
+      "gust_fps": 16.4,
+      "dalpha_rad": 0.02783,
+      "dCl_gust": 0.1558,
+      "dL_N": 103456.0,
+      "dn": 0.4884,
+      "n_total": 1.488,
+      "morph_cancel_frac_at_A_max": 1.0,
+      "A_req_to_cancel_fully": 0.01288,
+      "A_req_mm_root_chord": 59.3,
+      "within_A_max": true
+    },
+    {
+      "gust_mps": 10.0,
+      "gust_fps": 32.8,
+      "dalpha_rad": 0.05562,
+      "dCl_gust": 0.3113,
+      "dL_N": 206752.0,
+      "dn": 0.976,
+      "n_total": 1.976,
+      "morph_cancel_frac_at_A_max": 1.0,
+      "A_req_to_cancel_fully": 0.02575,
+      "A_req_mm_root_chord": 118.4,
+      "within_A_max": true
+    },
+    {
+      "gust_mps": 15.24,
+      "gust_fps": 50.0,
+      "dalpha_rad": 0.08465,
+      "dCl_gust": 0.4738,
+      "dL_N": 314662.0,
+      "dn": 1.4854,
+      "n_total": 2.485,
+      "morph_cancel_frac_at_A_max": 0.7656,
+      "A_req_to_cancel_fully": 0.03918,
+      "A_req_mm_root_chord": 180.3,
+      "within_A_max": false
+    }
+  ],
+  "headline": {
+    "gust_50fps": {
+      "dn": 1.4854,
+      "n_total": 2.485,
+      "morph_cancel_frac_at_A_max": 0.7656,
+      "A_req_full_cancel_mm": 180.3,
+      "within_A_max": false
+    }
+  },
+  "claim": "CLAIM-3: at the M0.58 cruise point a 50 ft/s (15.24 m/s) sharp-edged vertical gust adds dn = 1.4854 (n = 1 -> 2.485) [C]. The KESTREL-TE law at its demonstrated A = 3% chord droop (dCl = 0.363) cancels 77% of that gust's lift increment; full cancellation needs A = 180.3 mm droop at root chord \u2014 just past the demonstrated range, so the law has real gust-alleviation authority but not complete authority at 50 ft/s. Quasi-steady [C]; falsify with unsteady CFD of the morphed wing (actuation rate is the untested part).",
+  "caveats": [
+    "Quasi-steady: real sharp-edged gusts build up over ~chord-lengths of travel (Kussner), so true peak loads are somewhat higher than these numbers.",
+    "No structural dynamics: wing bending relief and aeroelastic response not modeled.",
+    "Helmbold AR correction is the simple incompressible form; transonic/compressibility ignored.",
+    "Morph actuation RATE not modeled \u2014 a gust alleviation system must move the TE in ~0.1-0.5 s; that is the falsification path (unsteady CFD + actuator model).",
+    "Gust alleviation also reduces passenger-perceived bumpiness, which is the design goal in docs/passenger-first.md \u2014 this file quantifies the aerodynamic authority only."
+  ]
+}

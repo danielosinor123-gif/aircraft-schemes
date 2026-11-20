@@ -19,7 +19,16 @@ boundary-layer-ingesting (BLI) fan**. Control is by a **morphing (flexible)
 trailing edge** instead of hinged flaps/ailerons. Power: **two rear-mounted
 turbo-generators plus a battery buffer**, feeding the electric fan array.
 
-**CLAIM-1 (the one computed, falsifiable claim of this scheme):** at the M0.58
+**Reframed 2026-11-20 — the design goal is the passenger, not the fuel gauge.**
+The plane is designed against the complaints people actually have about flying —
+noise, turbulence bumpiness, boarding time, cabin dryness/crampedness, cost —
+with measurable targets in `docs/passenger-first.md`. Fuel efficiency remains the
+[T] constraint that pays for the plane, but the headline is "the regional jet
+passengers don't hate." Two of those targets are computed in-repo, not asserted:
+CLAIM-3 (gust alleviation authority of the morphing TE) and ECON-1 (is electric
+actually cheap — it is only below ~$0.073/kWh electricity).
+
+**CLAIM-1 (computed, falsifiable):** at the M0.58
 cruise point, wake filling as configured is worth ≈ 2.1% of cruise propulsive
 power [C], dominated by the **aft BLI fan** (~2.15%); the trailing-edge
 wing–body-junction fans contribute ~0.01% and are packaging-driven, not
@@ -86,9 +95,13 @@ claim is asserted against the model in CI, not just written here.
 
 - DOES claim: a coherent integration of published concepts, with a parametric
   CAD model, in-repo conceptual sizing (`sizing.json`), coarse in-repo CFD
-  (`cfd/results.json`, [M]), and **two computed, falsifiable claims authored in
-  this repo**: CLAIM-1 wake-filling benefit (`docs/wake-filling.md`) and
-  CLAIM-2 the KESTREL-TE morphing trailing-edge law (`docs/morphing-te.md`).
+  (`cfd/results.json`, [M]), a **passenger-first requirements set**
+  (`docs/passenger-first.md`), and **computed, falsifiable claims authored in
+  this repo**: CLAIM-1 wake-filling benefit (`docs/wake-filling.md`), CLAIM-2
+  the KESTREL-TE morphing trailing-edge law (`docs/morphing-te.md`), CLAIM-3
+  gust-alleviation authority of that law (`docs/passenger-first.md`,
+  `analysis/gust-alleviation.json`), ECON-1 electric-vs-fuel energy cost
+  (`analysis/energy-cost.json`).
 - DOES NOT claim: any measured or validated performance. No number marked
   [T]/[E]/[C]/[M] is a result. Nothing here may be quoted as "KESTREL-X1
   achieves X%".
@@ -117,6 +130,8 @@ python schemes/kestrel-x1/model.py       # STEP/STL/SVG views + kestrel-x1-repor
 python schemes/kestrel-x1/sizing.py      # sizing.json
 python schemes/kestrel-x1/analysis.py    # analysis/wake-filling.json — CLAIM-1 [C]
 python schemes/kestrel-x1/morph.py       # analysis/morphing-te.json — CLAIM-2 [C]
+python schemes/kestrel-x1/gust.py        # analysis/gust-alleviation.json — CLAIM-3 [C]
+python schemes/kestrel-x1/econ.py        # analysis/energy-cost.json — ECON-1 [C]
 python tools/export_mesh.py              # cfd/ STL tessellation + blockMeshDict scaffold
 python compare.py                        # docs/comparison.md (A/B vs nova-bwb)
 ```

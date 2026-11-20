@@ -14,7 +14,7 @@ Conceptual aircraft design schemes — portfolio artifacts, built evidence-first
 
 | Scheme | Configuration | Doc |
 |---|---|---|
-| `schemes/kestrel-x1` | Truss-braced high-AR wing (35 m span) + 14 trailing-edge wake-filling DEP fans + 1 aft BLI fan + morphing TE, hybrid-electric | `schemes/kestrel-x1/concept.md` |
+| `schemes/kestrel-x1` | Truss-braced high-AR wing (35 m span) + 14 trailing-edge wake-filling DEP fans + 1 aft BLI fan + morphing TE, hybrid-electric — **designed passenger-first** (noise, turbulence, boarding, cabin, cost targets in `docs/passenger-first.md`) | `schemes/kestrel-x1/concept.md` |
 | `schemes/nova-bwb` | Blended wing body + 3 aft BLI fans + winglets, hybrid-electric (A/B baseline) | `schemes/nova-bwb/concept.md` |
 
 A/B comparison (generated): `docs/comparison.md` via `python compare.py`.
@@ -24,11 +24,14 @@ First real CFD runs (OpenFOAM v1912, coarse mesh, [M] tagged with caveats):
 α-sweep packaging: `schemes/kestrel-x1/cfd/drag-polar.json` — the sweep is
 declared **invalid as a polar** (under-resolved wing; see `docs/cfd-results.md`),
 with the honest Cd and the [T] L/D left UNCONFIRMED.
-KESTREL-X1's two computed, authored claims: CLAIM-1 wake-filling benefit
+KESTREL-X1's computed, authored claims: CLAIM-1 wake-filling benefit
 (≈2.1% of cruise power, dominated by the aft BLI fan) in `docs/wake-filling.md`,
-and CLAIM-2 the KESTREL-TE morphing trailing-edge law (ΔCl = +0.36 at 3%-chord
+CLAIM-2 the KESTREL-TE morphing trailing-edge law (ΔCl = +0.36 at 3%-chord
 droop, equivalent to a 1.36° hinged flap with no hinge gap) in
-`docs/morphing-te.md` — both with JSON outputs, self-tests, and CI freshness
+`docs/morphing-te.md`, CLAIM-3 gust-alleviation authority of that law
+(≈77% of a 50 ft/s gust's lift increment cancelled at 3% droop) and ECON-1
+(electric is cheaper than jet fuel only below ~$0.073/kWh) in
+`docs/passenger-first.md` — all with JSON outputs, self-tests, and CI freshness
 gates.
 
 ## Verify this repo yourself (fresh clone)
@@ -42,6 +45,8 @@ python schemes/kestrel-x1/sizing.py       # sizing.json [C] estimates
 python schemes/nova-bwb/sizing.py
 python schemes/kestrel-x1/analysis.py     # analysis/wake-filling.json — CLAIM-1 [C]
 python schemes/kestrel-x1/morph.py        # analysis/morphing-te.json — CLAIM-2 [C]
+python schemes/kestrel-x1/gust.py         # analysis/gust-alleviation.json — CLAIM-3 [C]
+python schemes/kestrel-x1/econ.py         # analysis/energy-cost.json — ECON-1 [C]
 python compare.py                         # docs/comparison.md
 python tools/export_mesh.py               # cfd/ STL tessellation + OpenFOAM blockMeshDict scaffold
 ```
@@ -58,6 +63,8 @@ lib/aero.py        shared CadQuery helpers (NACA profiles, lofts, mirror, export
 lib/sizing.py      Breguet + fixed-We conceptual sizing -> sizing.json
 lib/wake_filling.py  CLAIM-1: wake-filling benefit from model geometry -> wake-filling.json
 lib/morph.py       CLAIM-2: KESTREL-TE morphing law + thin-airfoil analysis -> morphing-te.json
+lib/gust.py        CLAIM-3: gust loads + morphing-TE alleviation authority -> gust-alleviation.json
+lib/econ.py        ECON-1: jet-fuel vs electricity energy cost -> energy-cost.json
 schemes/<name>/    geom.py (pure-python geometry, shared model<->analysis), model.py,
                    sizing.py, analysis.py (kestrel-x1), concept.md, artifacts, cfd/
 tools/export_mesh.py  fine STL + blockMeshDict scaffold per scheme

@@ -1,0 +1,41 @@
+{
+  "scheme": "kestrel-x1",
+  "claim_id": "ECON-1",
+  "tag": "[C] arithmetic on published-typical input prices [E] \u2014 NOT a DOC model. KESTREL-X1 is HYBRID-electric (turbo-generators burn fuel, battery is a buffer); the battery-electric comparison below is the all-electric bound.",
+  "inputs_E": {
+    "jet_LHV_MJ_per_kg": 43.0,
+    "jet_density_kg_per_L": 0.8,
+    "jet_price_usd_per_L": 0.7,
+    "elec_price_usd_per_kwh": 0.1,
+    "battery_kwh_per_kg_pack": 0.25,
+    "note": "typical published values, ranges in comments \u2014 verify before citing"
+  },
+  "derived": {
+    "kwh_per_kg_jet_fuel": 11.94,
+    "kwh_per_L_jet": 9.56,
+    "jet_usd_per_kwh": 0.0733,
+    "battery_kg_per_kg_fuel_replaced": 47.8
+  },
+  "self_test": {
+    "jet_usd_per_kwh": 0.0733,
+    "expected_range": [
+      0.05,
+      0.12
+    ],
+    "pass": true
+  },
+  "mission": {
+    "fuel_kg_per_design_mission [C from sizing.json]": 3149.0,
+    "energy_kwh": 37618.0,
+    "cost_usd_if_jet_fuel": 2756.0,
+    "cost_usd_if_grid_electric": 3762.0,
+    "electric_over_fuel_ratio": 1.365,
+    "breakeven_elec_price_usd_per_kwh": 0.0733
+  },
+  "verdict": "At $0.10/kWh grid power, battery-electric energy costs 1.37x jet fuel per mission \u2014 NOT cheaper on energy alone [C]. Electric wins on energy price only below $0.073/kWh (off-peak / renewables). The honest case for the hybrid-electric layout is emissions, noise, and maintenance \u2014 plus the ~48x mass penalty per kWh is why full battery-electric is hard for a 1,500 nm mission. 'Cheap' is therefore a [T] target with conditions, not a result.",
+  "caveats": [
+    "Energy price only \u2014 excludes maintenance, engine overhaul, battery replacement cycles, and carbon pricing, which can flip the comparison (published direction: electric wins more as carbon prices rise) [E, verify].",
+    "KESTREL-X1 as configured is hybrid-electric: the 2 turbo-generators burn Jet A; the battery is a takeoff/climb buffer, so its mission energy is mostly jet fuel today.",
+    "Prices are point values with ranges in comments; recompute with current prices before any real use."
+  ]
+}
