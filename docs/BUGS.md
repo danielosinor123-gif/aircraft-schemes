@@ -1,5 +1,28 @@
 # BUGS / provenance log
 
+## PROV-2026-11-21-07 — [E] figures verified via web search; several corrected; ECON-1 verdict flipped
+
+The first draft of concept.md / passenger-first.md was written when web search was
+unavailable and said so. On 2026-11-21 the sources were actually checked:
+
+- X-66/TTBW: "up to 30%" is a SYSTEM-level number (truss alone is 5-10%, NASA SFNP);
+  the X-66 flight demonstrator was paused 2025-04 in favor of a thin-wing testbed.
+  concept.md corrected.
+- D8: "40-50%" was wrong for current tech — configuration alone ~21-30%, up to ~49%
+  incl. BLI, ~71% only with N+3 advanced tech. Corrected.
+- STARC-ABL: ~12% fuel burn (coupled aeropropulsive model), not "single-digit to 10%". Corrected.
+- MAVERIC: "up to 20%" confirmed (Airbus 2020); added the U. Toronto 2016 caveat that
+  the BWB fuel advantage is mainly at large sizes — matters for our 76-seat NOVA-BWB.
+- ECON-1 inputs updated to Nov-2026 prices (EIA Jet A spot $4.48/gal = $0.124/kWh;
+  industrial electricity 9.64 c/kWh Aug 2026). VERDICT FLIPPED: electric energy is now
+  0.78x jet fuel per mission (was 1.37x at the old $0.70/L assumption) — energy-cost
+  now favors electric at industrial rates; the ~48x battery mass penalty still blocks
+  all-battery 1,500 nm. passenger-first.md updated. Prices move — recompute before use.
+- Turbulence/boarding/cabin/noise rows in passenger-first.md now carry verified 2025-2026
+  statistics (NTSB 2008-2023 injury study; Reading CAT +55%/+41% since 1979; ICAO Ch. 14;
+  Heart X1 Jul 2026 flight; 787 6,000 ft cabin). Sources listed in the doc.
+
+
 ## BUG-2026-11-20-06 — stale force-integrator copy reported an unprojected, non-monotonic α sweep
 
 While packaging the refined-mesh α sweep, the scratch copy of

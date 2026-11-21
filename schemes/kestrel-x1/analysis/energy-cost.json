@@ -5,34 +5,34 @@
   "inputs_E": {
     "jet_LHV_MJ_per_kg": 43.0,
     "jet_density_kg_per_L": 0.8,
-    "jet_price_usd_per_L": 0.7,
-    "elec_price_usd_per_kwh": 0.1,
+    "jet_price_usd_per_L": 1.1834913523237907,
+    "elec_price_usd_per_kwh": 0.0964,
     "battery_kwh_per_kg_pack": 0.25,
     "note": "typical published values, ranges in comments \u2014 verify before citing"
   },
   "derived": {
     "kwh_per_kg_jet_fuel": 11.94,
     "kwh_per_L_jet": 9.56,
-    "jet_usd_per_kwh": 0.0733,
+    "jet_usd_per_kwh": 0.1239,
     "battery_kg_per_kg_fuel_replaced": 47.8
   },
   "self_test": {
-    "jet_usd_per_kwh": 0.0733,
+    "jet_usd_per_kwh": 0.1239,
     "expected_range": [
-      0.05,
-      0.12
+      0.08,
+      0.3
     ],
     "pass": true
   },
   "mission": {
     "fuel_kg_per_design_mission [C from sizing.json]": 3149.0,
     "energy_kwh": 37618.0,
-    "cost_usd_if_jet_fuel": 2756.0,
-    "cost_usd_if_grid_electric": 3762.0,
-    "electric_over_fuel_ratio": 1.365,
-    "breakeven_elec_price_usd_per_kwh": 0.0733
+    "cost_usd_if_jet_fuel": 4659.0,
+    "cost_usd_if_grid_electric": 3626.0,
+    "electric_over_fuel_ratio": 0.778,
+    "breakeven_elec_price_usd_per_kwh": 0.1239
   },
-  "verdict": "At $0.10/kWh grid power, battery-electric energy costs 1.37x jet fuel per mission \u2014 NOT cheaper on energy alone [C]. Electric wins on energy price only below $0.073/kWh (off-peak / renewables). The honest case for the hybrid-electric layout is emissions, noise, and maintenance \u2014 plus the ~48x mass penalty per kWh is why full battery-electric is hard for a 1,500 nm mission. 'Cheap' is therefore a [T] target with conditions, not a result.",
+  "verdict": "At the Nov-2026 verified prices (jet $0.124/kWh wholesale, grid $0.0964/kWh industrial), battery-electric energy costs 0.78x jet fuel per mission [C] \u2014 grid power is now CHEAPER per kWh than wholesale Jet A (break-even $0.124/kWh), and FBO retail jet pushes further. BUT the ~48x battery mass penalty per kWh means an all-battery 1,500 nm mission is still not viable; the honest case for KESTREL's HYBRID-electric layout is cheaper energy + emissions + noise + maintenance, with the battery as a buffer. 'Cheap' is price-dependent: recompute with current prices before relying on it.",
   "caveats": [
     "Energy price only \u2014 excludes maintenance, engine overhaul, battery replacement cycles, and carbon pricing, which can flip the comparison (published direction: electric wins more as carbon prices rise) [E, verify].",
     "KESTREL-X1 as configured is hybrid-electric: the 2 turbo-generators burn Jet A; the battery is a takeoff/climb buffer, so its mission energy is mostly jet fuel today.",

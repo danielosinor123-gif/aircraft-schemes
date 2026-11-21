@@ -1,0 +1,142 @@
+{
+  "scheme": "kestrel-x1",
+  "claim_id": "PROP-1",
+  "tag": "[C] computed in-repo by lib/engine.py \u2014 idealized on-design turbofan cycle, self-tested against published engine TSFCs [E]. NOT validated; no off-design, no BLI distortion penalty, no bleed.",
+  "self_tests_vs_published": [
+    {
+      "point": "CFM56-7B-class (737-800)",
+      "published_TSFC_lb_lbf_h [E]": 0.667,
+      "computed_TSFC_lb_lbf_h": 0.603,
+      "band": [
+        0.55,
+        0.78
+      ],
+      "pass": true
+    },
+    {
+      "point": "LEAP-1A-class (A320neo)",
+      "published_TSFC_lb_lbf_h [E]": 0.51,
+      "computed_TSFC_lb_lbf_h": 0.564,
+      "band": [
+        0.45,
+        0.6
+      ],
+      "pass": true
+    },
+    {
+      "point": "NASA NPSS advanced single-aisle (SciTech 2024)",
+      "published_TSFC_lb_lbf_h [E]": 0.56,
+      "computed_TSFC_lb_lbf_h": 0.574,
+      "band": [
+        0.48,
+        0.66
+      ],
+      "pass": true
+    }
+  ],
+  "kestrel_turbogenerator_cycle_at_cruise": {
+    "BPR": 9.0,
+    "pi_c_OPR": 45.0,
+    "pi_f_FPR": 1.55,
+    "Tt4_K": 1750.0,
+    "fuel_air_ratio": 0.02313,
+    "TSFC_lb_lbf_h": 0.455
+  },
+  "sizing_tsfc_assumption_check": {
+    "computed_TSFC_lb_lbf_h": 0.455,
+    "sizing_assumption_tsfc_1hr": 0.55,
+    "ratio_computed_over_assumed": 0.828,
+    "within_20pct": true,
+    "verdict": "sizing.py's tsfc=0.55 is consistent with a modern high-BPR cycle at this cruise point"
+  },
+  "sensitivity": {
+    "BPR_sweep": [
+      {
+        "BPR": 5.5,
+        "TSFC_lb_lbf_h": 0.541
+      },
+      {
+        "BPR": 8.0,
+        "TSFC_lb_lbf_h": 0.476
+      },
+      {
+        "BPR": 9.0,
+        "TSFC_lb_lbf_h": 0.455
+      },
+      {
+        "BPR": 11.0,
+        "TSFC_lb_lbf_h": 0.421
+      },
+      {
+        "BPR": 14.0,
+        "TSFC_lb_lbf_h": 0.388
+      }
+    ],
+    "Tt4_sweep_K": [
+      {
+        "Tt4_K": 1550,
+        "TSFC_lb_lbf_h": 0.408
+      },
+      {
+        "Tt4_K": 1650,
+        "TSFC_lb_lbf_h": 0.431
+      },
+      {
+        "Tt4_K": 1750,
+        "TSFC_lb_lbf_h": 0.455
+      },
+      {
+        "Tt4_K": 1850,
+        "TSFC_lb_lbf_h": 0.48
+      }
+    ],
+    "note": "higher BPR / higher Tt4 lower TSFC, as published trends show [E]"
+  },
+  "fuel_fraction_sensitivity": {
+    "fuel_fraction_at_tsfc_0.55": 0.1458,
+    "fuel_fraction_at_computed_tsfc": 0.1223,
+    "MTOW_kg_at_0.55": 21601.0,
+    "MTOW_kg_at_computed": 20182.0,
+    "dMTOW_pct": -6.57
+  },
+  "fan_loading_check": {
+    "total_cruise_propulsive_power_W": 2238027.0,
+    "DEP_fans": {
+      "n": 14,
+      "per_fan": {
+        "fan_d_m": 0.64,
+        "area_m2": 0.322,
+        "v_face_mps": 120.0,
+        "m_dot_kg_s": 21.2,
+        "power_W": 159900.0,
+        "specific_work_kJ_kg": 7.55,
+        "FPR_implied": 1.096
+      }
+    },
+    "aft_BLI_fan": {
+      "power_frac_of_total": 0.5,
+      "loading": {
+        "fan_d_m": 1.8,
+        "area_m2": 2.545,
+        "v_face_mps": 120.0,
+        "m_dot_kg_s": 167.6,
+        "power_W": 1119014.0,
+        "specific_work_kJ_kg": 6.68,
+        "FPR_implied": 1.0846
+      }
+    }
+  },
+  "headline": {
+    "cruise_TSFC_computed_lb_lbf_h": 0.455,
+    "vs_sizing_assumption_0.55": "sizing.py's tsfc=0.55 is consistent with a modern high-BPR cycle at this cruise point",
+    "DEP_fan_FPR_implied": 1.096,
+    "BLI_fan_FPR_implied": 1.0846
+  },
+  "caveats": [
+    "On-design only: no off-design/spool matching, throttle, or altitude/Mach map.",
+    "No BLI inlet-distortion efficiency penalty on the aft fan (real STARC-ABL/D8 work shows some loss \u2014 treat BLI fan numbers as optimistic).",
+    "No bleed air, accessories, or installation losses; fully expanded ideal nozzles.",
+    "Fan-face velocity 120 m/s is an assumption [T], not a design; FPR values are order-of-magnitude loading checks, not fan designs.",
+    "TSFC in lb/(lbf h) is numerically 1/hr in consistent units \u2014 same convention as lib/sizing.py, so the fuel-fraction sensitivity is directly comparable."
+  ]
+}

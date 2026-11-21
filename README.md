@@ -29,10 +29,15 @@ KESTREL-X1's computed, authored claims: CLAIM-1 wake-filling benefit
 CLAIM-2 the KESTREL-TE morphing trailing-edge law (ΔCl = +0.36 at 3%-chord
 droop, equivalent to a 1.36° hinged flap with no hinge gap) in
 `docs/morphing-te.md`, CLAIM-3 gust-alleviation authority of that law
-(≈77% of a 50 ft/s gust's lift increment cancelled at 3% droop) and ECON-1
-(electric is cheaper than jet fuel only below ~$0.073/kWh) in
-`docs/passenger-first.md` — all with JSON outputs, self-tests, and CI freshness
-gates.
+(≈77% of a 50 ft/s gust's lift increment cancelled at 3% droop), ECON-1
+(electric energy is 0.78× jet-fuel cost at Nov-2026 industrial rates — verified
+prices; ~48× battery mass penalty still blocks all-battery range), and PROP-1
+(the engines: turbofan cycle self-tested vs published CFM56/LEAP/NPSS TSFCs,
+KESTREL turbo-generator cycle TSFC = 0.455 vs the 0.55 sizing assumption, fan
+loading FPR ≈ 1.08-1.10) in `docs/passenger-first.md` and `docs/propulsion.md` —
+all with JSON outputs, self-tests, a pytest suite (`tests/`), and CI freshness
+gates. [E] figures verified via web sources 2026-11-21 (see `docs/BUGS.md`
+PROV-2026-11-21-07).
 
 ## Verify this repo yourself (fresh clone)
 
@@ -47,14 +52,18 @@ python schemes/kestrel-x1/analysis.py     # analysis/wake-filling.json — CLAIM
 python schemes/kestrel-x1/morph.py        # analysis/morphing-te.json — CLAIM-2 [C]
 python schemes/kestrel-x1/gust.py         # analysis/gust-alleviation.json — CLAIM-3 [C]
 python schemes/kestrel-x1/econ.py         # analysis/energy-cost.json — ECON-1 [C]
+python schemes/kestrel-x1/propulsion.py   # analysis/propulsion.json — PROP-1 [C] (engines)
+python -m pytest tests -q                 # stress tests for every claim
 python compare.py                         # docs/comparison.md
 python tools/export_mesh.py               # cfd/ STL tessellation + OpenFOAM blockMeshDict scaffold
 ```
 
-CI runs the same sequence on every push to `main`, including two fail-closed
-gates: both models' reported span must be 34–36 m (`*-report.json`), and the
-committed generated evidence (`sizing.json`, `wake-filling.json`,
-`comparison.md`) must match a fresh regeneration exactly (exit 2 on stale).
+CI runs the same sequence on every push to `main` plus `pytest tests -q`,
+including fail-closed gates: both models' reported span must be 34–36 m
+(`*-report.json`), and the committed generated evidence (`sizing.json`,
+`wake-filling.json`, `morphing-te.json`, `gust-alleviation.json`,
+`energy-cost.json`, `propulsion.json`, `comparison.md`) must match a fresh
+regeneration exactly (exit 2 on stale).
 
 ## Layout
 
@@ -65,6 +74,7 @@ lib/wake_filling.py  CLAIM-1: wake-filling benefit from model geometry -> wake-f
 lib/morph.py       CLAIM-2: KESTREL-TE morphing law + thin-airfoil analysis -> morphing-te.json
 lib/gust.py        CLAIM-3: gust loads + morphing-TE alleviation authority -> gust-alleviation.json
 lib/econ.py        ECON-1: jet-fuel vs electricity energy cost -> energy-cost.json
+lib/engine.py      PROP-1: turbofan cycle self-tested vs published engines -> propulsion.json
 schemes/<name>/    geom.py (pure-python geometry, shared model<->analysis), model.py,
                    sizing.py, analysis.py (kestrel-x1), concept.md, artifacts, cfd/
 tools/export_mesh.py  fine STL + blockMeshDict scaffold per scheme

@@ -80,16 +80,16 @@ claim is asserted against the model in CI, not just written here.
 
 | Element | Published inspiration | Commonly cited claim [E] |
 |---|---|---|
-| Truss-braced high-AR wing | NASA/Boeing **X-66 Sustainable Flight Demonstrator** (TTB concept) | NASA targets up to ~30% fuel-burn reduction vs current single-aisle |
+| Truss-braced high-AR wing | NASA/Boeing **X-66 Sustainable Flight Demonstrator** (TTB concept) | Truss wing ALONE ~5-10% fuel burn [E]; up to ~30% only COMBINED with advanced propulsion/systems [E, NASA SFNP]. X-66 flight demo paused 2025-04 in favor of a thin-wing ground testbed [E, verified 2026-11-21] |
 | Wide double-bubble fuselage | **MIT/Aurora D8** concept | D8 studies reported on the order of 40–50% fuel burn vs 737-class |
 | Distributed electric propulsion, wake filling | **NASA N3-X**, LEAPTech | DEP + wake filling targeted at large drag savings |
-| Aft-fuselage BLI fan | **NASA STARC-ABL** | BLI reported at roughly single-digit to ~10% fuel burn |
-| Blended-wing direction | **Airbus MAVERIC** | Airbus cites ~20% fuel burn for BWB |
+| Aft-fuselage BLI fan | **NASA STARC-ABL** | ~12% fuel-burn reduction in coupled aeropropulsive modeling [E, AIAA J. Aircraft, verified 2026-11-21] |
+| Blended-wing direction | **Airbus MAVERIC** | Up to ~20% fuel burn vs single-aisle [E, Airbus 2020]. Caveat: 2016 U. Toronto study finds the BWB fuel advantage mainly at LARGE sizes — directly relevant to our 76-seat NOVA-BWB A/B [E, verified 2026-11-21] |
 | Morphing trailing edge | **KESTREL-TE law — authored in this repo** (CLAIM-2, `docs/morphing-te.md`, `lib/morph.py`); FlexSys/NASA ACTE as published inspiration [E] | ΔCl = +0.36 at 3%-chord droop ≈ 1.36° hinged flap, no hinge gap [C] |
 
-> Note: web search was unavailable when this doc was written; the figures above are
-> the commonly cited published estimates for these programs. **Verify against the
-> primary sources before using them in any application.**
+> Note: the figures above were verified against web sources on 2026-11-21
+> (see `docs/BUGS.md` PROV-2026-11-21-07 for what changed vs the first unverified
+> draft). Still verify against primary sources before citing in any application.
 
 ## 5. Claim discipline — what this document does and does not claim
 
@@ -132,6 +132,7 @@ python schemes/kestrel-x1/analysis.py    # analysis/wake-filling.json — CLAIM-
 python schemes/kestrel-x1/morph.py       # analysis/morphing-te.json — CLAIM-2 [C]
 python schemes/kestrel-x1/gust.py        # analysis/gust-alleviation.json — CLAIM-3 [C]
 python schemes/kestrel-x1/econ.py        # analysis/energy-cost.json — ECON-1 [C]
+python schemes/kestrel-x1/propulsion.py  # analysis/propulsion.json — PROP-1 [C] (engines)
 python tools/export_mesh.py              # cfd/ STL tessellation + blockMeshDict scaffold
 python compare.py                        # docs/comparison.md (A/B vs nova-bwb)
 ```

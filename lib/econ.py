@@ -5,22 +5,25 @@ design mission (fuel mass from sizing.json), the break-even electricity price,
 and the battery mass penalty vs jet fuel. All inputs are published-typical
 values tagged [E]; outputs are [C] arithmetic on them.
 
-Self-test: jet fuel must land at $0.05-0.12/kWh (typical Jet A $0.55-1.10/L,
-~9.6 kWh/L). Recorded in the JSON; run() refuses to emit if it fails.
+Self-test: jet fuel must land at $0.08-0.30/kWh (Nov-2026 wholesale spot ~$0.124/kWh;
+FBO retail up to ~$0.25/kWh). Recorded in the JSON; run() refuses to emit if it fails.
 
-Honest expectation (verified when run): at an industrial electricity price of
-~$0.10/kWh, battery-electric energy is MORE expensive than jet fuel per kWh —
-the real electric wins are emissions, noise, and maintenance, not energy cost,
-unless electricity is cheap (off-peak/renewables ~$0.03-0.05/kWh).
+2026-11-21 verified inputs (see BUGS.md PROV-2026-11-21-07): EIA Gulf Coast Jet A spot
+$4.48/gal (Nov 2026) = $1.18/L and EIA U.S. industrial electricity 9.64 c/kWh (Aug 2026)
+mean grid electricity is now CHEAPER per kWh than wholesale jet fuel — the verdict below
+reflects that. Prices move; recompute before any real use.
 """
 import json
 from pathlib import Path
 
-# published-typical inputs [E] (verify before citing):
+# published-typical inputs [E] — verified via web sources 2026-11-21 (PROV-2026-11-21-07):
+# Jet A wholesale spot ~$4.48/gal U.S. Gulf Coast (EIA, Nov 2026) = $1.18/L; FBO retail much
+# higher ($8.5-9.34/gal, Aviation Week/GlobalAir Nov 2026); IATA global $169.82/bbl. Base = wholesale.
+# Electricity: U.S. industrial average 9.64 c/kWh (EIA, Aug 2026); state range ~4-39 c/kWh.
 JET_LHV_MJ_KG = 43.0        # Jet A lower heating value
 JET_DENSITY_KG_L = 0.80     # Jet A density
-JET_PRICE_USD_L = 0.70      # typical range $0.55-1.10/L
-ELEC_PRICE_USD_KWH = 0.10   # US industrial average, range ~$0.08-0.13
+JET_PRICE_USD_L = 4.48 / 3.78541   # EIA Gulf Coast spot $4.48/gal, Nov 2026 -> $/L
+ELEC_PRICE_USD_KWH = 0.0964         # EIA U.S. industrial average, Aug 2026
 BATTERY_KWH_KG = 0.25       # current Li-ion pack-level gravimetric energy
 KWH_PER_MJ = 1.0 / 3.6
 
@@ -35,8 +38,8 @@ def run(outdir, P):
     jet_usd_per_kwh = JET_PRICE_USD_L / kwh_per_L
 
     self_test = {"jet_usd_per_kwh": round(jet_usd_per_kwh, 4),
-                 "expected_range": [0.05, 0.12],
-                 "pass": 0.05 <= jet_usd_per_kwh <= 0.12}
+                 "expected_range": [0.08, 0.30],
+                 "pass": 0.08 <= jet_usd_per_kwh <= 0.30}
     if not self_test["pass"]:
         raise SystemExit("econ self-test FAILED — check input prices")
 
@@ -74,12 +77,14 @@ def run(outdir, P):
             "breakeven_elec_price_usd_per_kwh": round(breakeven_elec, 4),
         },
         "verdict": (
-            f"At ${ELEC_PRICE_USD_KWH:.2f}/kWh grid power, battery-electric energy costs "
-            f"{round(cost_elec/cost_fuel,2)}x jet fuel per mission — NOT cheaper on energy alone [C]. "
-            f"Electric wins on energy price only below ${round(breakeven_elec,3)}/kWh (off-peak / "
-            "renewables). The honest case for the hybrid-electric layout is emissions, noise, and "
-            "maintenance — plus the ~48x mass penalty per kWh is why full battery-electric is hard "
-            "for a 1,500 nm mission. 'Cheap' is therefore a [T] target with conditions, not a result."
+            f"At the Nov-2026 verified prices (jet ${jet_usd_per_kwh:.3f}/kWh wholesale, grid "
+            f"${ELEC_PRICE_USD_KWH:.4f}/kWh industrial), battery-electric energy costs "
+            f"{round(cost_elec/cost_fuel,2)}x jet fuel per mission [C] — grid power is now CHEAPER per "
+            f"kWh than wholesale Jet A (break-even ${round(breakeven_elec,3)}/kWh), and FBO retail jet "
+            "pushes further. BUT the ~48x battery mass penalty per kWh means an all-battery 1,500 nm "
+            "mission is still not viable; the honest case for KESTREL's HYBRID-electric layout is "
+            "cheaper energy + emissions + noise + maintenance, with the battery as a buffer. "
+            "'Cheap' is price-dependent: recompute with current prices before relying on it."
         ),
         "caveats": [
             "Energy price only — excludes maintenance, engine overhaul, battery replacement cycles, "
